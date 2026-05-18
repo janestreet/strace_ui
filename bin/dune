@@ -1,0 +1,7 @@
+(executables
+ (modes byte exe)
+ (names main)
+ (public_names strace-ui)
+ (libraries core_unix.command_unix core strace_ui)
+ (preprocess
+  (pps ppx_jane bonsai.ppx_bonsai)))

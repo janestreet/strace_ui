@@ -1,0 +1,20 @@
+strace-ui - interactive strace viewer
+
+  main.exe [[PROGRAM ...]]
+
+=== flags ===
+
+  [-- PROGRAM]               . run PROGRAM
+  [-e EXPR]                  . Trace expression passed to strace (e.g.
+                               trace=%net)
+  [-p PID]                   . Attach to an existing process
+  [-theme THEME]             . Color theme (Catppuccin_Mocha,
+                               Catppuccin_Macchiato, Catppuccin_Frappe,
+                               Catppuccin_Latte, Vscode_dark, Vscode_light,
+                               Gruvbox_dark, Gruvbox_light, Dracula, Kanagawa,
+                               Tokyo_night_dark, Tokyo_night_light, Monokai,
+                               Bluloco, Solarized_dark, Solarized_light)
+  [-build-info]              . print info about this build and exit
+  [-version]                 . print the version of this build and exit
+  [-help], -?                . print this help text and exit
+
