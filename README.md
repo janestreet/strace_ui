@@ -32,6 +32,8 @@
       |}]
 ```
 
+![GIF demo of strace-ui](./demos/demo.gif)
+
 ## Installation
 
 1. If you are new to OCaml - or if you haven't already - **install
