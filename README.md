@@ -2,35 +2,34 @@
 
 `strace-ui` is an strace UI. It looks like this:
 
-```ocaml
-    [%expect
-      {|
-      ┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
-      │╭ Syscalls ─────────────────── f:all ╮╭ Details <tab> ─────────────────────────────── x:auto m:man ╮│
-      ││  execve("/usr/bin/ping",...)      0││ recvmsg  pid 7 (#0)  15:04:20.358200064  0.000150s         ││
-      ││  brk(NULL)                   0x558>││ ping localhost                                             ││
-      ││  access("/etc/ld.so.prel...) ENOENT││ Receive a message from a socket                            ││
-      ││  openat(AT_FDCWD, "/lib6...)      3││ ssize_t recvmsg(int sockfd , struct msghdr * msg , int flag││
-      ││  read(3, "\x7fELF\x02\x0...)    832││                                                            ││
-      ││  fstat(3, {st_mode=S_IFR...)      0││ Arguments                                                  ││
-      ││  mmap(NULL, 4020448, PRO...) 0x7f6>││ sockfd: 3<PING:[140199664]>                                ││
-      ││  close(3)                         0││     ↳ fd 3 from: socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP) ││
-      ││  socket(AF_INET, SOCK_DG...)      3││ msg:                                                       ││
-      ││  connect(3, {sa_family=A...)      0││ ├─msg_name                                                 ││
-      ││  sendto(3, "\x08\x00\xe1...)     64││ │ ├─sa_family = AF_INET                                    ││
-      ││  recvmsg(3, {msg_name={s...)     64││ │ ├─sin_port = htons(0)                                    ││
-      ││  write(1, "64 bytes from...)     64││ │ ╰─sin_addr = inet_addr("127.0.0.1")                      ││
-      │╰───────────────────────────── 12/13 ╯│ ├─msg_namelen = 128 => 16                                  ││
-      │                                      │ ├─msg_iov                                                  ││
-      │                                      │ │ ╰─[0]                                                    ││
-      │                                      │ │   ├─iov_base =                                           ││
-      │                                      │ │   │ 0000 00 00 e9 2f 00 6c 00 01 │00./0l01│              ││
-      │                                      │ │   │ 0008 ba 07 8e 69             │.7.i    │              ││
-      │                                      │ │   ╰─iov_len = 192                                        ││
-      │                                      ╰────────────────────────────────────────────────────────────╯│
-      └────────────────────────────────────────────────────────────────────────────────────────────────────┘
-      |}]
 ```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│╭ Syscalls ─────────────────── f:all ╮╭ Details <tab> ─────────────────────────────── x:auto m:man ╮│
+││  execve("/usr/bin/ping",...)      0││ recvmsg  pid 7 (#0)  15:04:20.358200064  0.000150s         ││
+││  brk(NULL)                   0x558>││ ping localhost                                             ││
+││  access("/etc/ld.so.prel...) ENOENT││ Receive a message from a socket                            ││
+││  openat(AT_FDCWD, "/lib6...)      3││ ssize_t recvmsg(int sockfd , struct msghdr * msg , int flag││
+││  read(3, "\x7fELF\x02\x0...)    832││                                                            ││
+││  fstat(3, {st_mode=S_IFR...)      0││ Arguments                                                  ││
+││  mmap(NULL, 4020448, PRO...) 0x7f6>││ sockfd: 3<PING:[140199664]>                                ││
+││  close(3)                         0││     ↳ fd 3 from: socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP) ││
+││  socket(AF_INET, SOCK_DG...)      3││ msg:                                                       ││
+││  connect(3, {sa_family=A...)      0││ ├─msg_name                                                 ││
+││  sendto(3, "\x08\x00\xe1...)     64││ │ ├─sa_family = AF_INET                                    ││
+││  recvmsg(3, {msg_name={s...)     64││ │ ├─sin_port = htons(0)                                    ││
+││  write(1, "64 bytes from...)     64││ │ ╰─sin_addr = inet_addr("127.0.0.1")                      ││
+│╰───────────────────────────── 12/13 ╯│ ├─msg_namelen = 128 => 16                                  ││
+│                                      │ ├─msg_iov                                                  ││
+│                                      │ │ ╰─[0]                                                    ││
+│                                      │ │   ├─iov_base =                                           ││
+│                                      │ │   │ 0000 00 00 e9 2f 00 6c 00 01 │00./0l01│              ││
+│                                      │ │   │ 0008 ba 07 8e 69             │.7.i    │              ││
+│                                      │ │   ╰─iov_len = 192                                        ││
+│                                      ╰────────────────────────────────────────────────────────────╯│
+└────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+![GIF demo of strace-ui](./demos/demo.gif)
 
 ## Installation
 
@@ -103,33 +102,30 @@ the syscall list by pressing `f` (or `%` or `h`)
 Press `F1` or `?` for a list of keyboard shortcuts:
 
 ```ocaml
-    [%expect
-      {|
-      ┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
-      │╭ Syscalls ──────────────╭────────────────────────────────────────────────╮────────── x:auto m:man ╮│
-      ││  execve("/usr/bin/ping"│ Keyboard Shortcuts                             │0064  0.000150s         ││
-      ││  brk(NULL)             │                                                │                        ││
-      ││  access("/etc/ld.so.pre│ F1 / ?  Toggle this help                       │                        ││
-      ││  openat(AT_FDCWD, "/lib│ Tab     Switch focus between list and details  │ msghdr * msg , int flag││
-      ││  read(3, "\x7fELF\x02\x│ f       Edit filter expression                 │                        ││
-      ││  fstat(3, {st_mode=S_IF│ /       Grep (start regex filter)              │                        ││
-      ││  mmap(NULL, 4020448, PR│ %       Cycle family presets                   │                        ││
-      ││  close(3)              │ h       Hide selected syscall                  │CK_DGRAM, IPPROTO_ICMP) ││
-      ││  socket(AF_INET, SOCK_D│ H       Show only selected syscall             │                        ││
-      ││  connect(3, {sa_family=│ p       Filter to selected PID                 │                        ││
-      ││  sendto(3, "\x08\x00\xe│ P       Exclude selected PID                   │                        ││
-      ││  recvmsg(3, {msg_name={│ x       Cycle display mode (auto/hex/str)      │                        ││
-      ││  write(1, "64 bytes fro│ m       Toggle man page                        │")                      ││
-      │╰────────────────────────│ d / u   Page down / up                         │                        ││
-      │                         │ g / G   Jump to top / bottom                   │                        ││
-      │                         │ F       Follow selected FD                     │                        ││
-      │                         │ < / >   Jump to prev / next syscall on same FD │                        ││
-      │                         │ ^       Jump to FD origin (open/socket/etc.)   ││00./0l01│              ││
-      │                         │ Alt-f   Clear filter                           ││.7.i    │              ││
-      │                         │ Ctrl-c  Quit                                   │                        ││
-      │                         │                                                │────────────────────────╯│
-      └────────────────────────────────────────────────────────────────────────────────────────────────────┘
-      |}]
+┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│╭ Syscalls ──────────────╭────────────────────────────────────────────────╮────────── x:auto m:man ╮│
+││  execve("/usr/bin/ping"│ Keyboard Shortcuts                             │0064  0.000150s         ││
+││  brk(NULL)             │                                                │                        ││
+││  access("/etc/ld.so.pre│ F1 / ?  Toggle this help                       │                        ││
+││  openat(AT_FDCWD, "/lib│ Tab     Switch focus between list and details  │ msghdr * msg , int flag││
+││  read(3, "\x7fELF\x02\x│ f       Edit filter expression                 │                        ││
+││  fstat(3, {st_mode=S_IF│ /       Grep (start regex filter)              │                        ││
+││  mmap(NULL, 4020448, PR│ %       Cycle family presets                   │                        ││
+││  close(3)              │ h       Hide selected syscall                  │CK_DGRAM, IPPROTO_ICMP) ││
+││  socket(AF_INET, SOCK_D│ H       Show only selected syscall             │                        ││
+││  connect(3, {sa_family=│ p       Filter to selected PID                 │                        ││
+││  sendto(3, "\x08\x00\xe│ P       Exclude selected PID                   │                        ││
+││  recvmsg(3, {msg_name={│ x       Cycle display mode (auto/hex/str)      │                        ││
+││  write(1, "64 bytes fro│ m       Toggle man page                        │")                      ││
+│╰────────────────────────│ d / u   Page down / up                         │                        ││
+│                         │ g / G   Jump to top / bottom                   │                        ││
+│                         │ F       Follow selected FD                     │                        ││
+│                         │ < / >   Jump to prev / next syscall on same FD │                        ││
+│                         │ ^       Jump to FD origin (open/socket/etc.)   ││00./0l01│              ││
+│                         │ Alt-f   Clear filter                           ││.7.i    │              ││
+│                         │ Ctrl-c  Quit                                   │                        ││
+│                         │                                                │────────────────────────╯│
+└────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## CLI
