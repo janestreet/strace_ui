@@ -42,7 +42,7 @@
 2. `strace-ui` uses [OxCaml](https://oxcaml.org/) so the next thing
    you'll want to do is install `oxcaml` by running:
    `opam switch create oxcaml-dev --repos=oxcaml-dev=git+https://github.com/oxcaml/opam-repository.git#dev,default`.
-4. Run `opam install strace-ui`. This will install the `strace-ui`
+3. Run `opam install strace_ui`. This will install the `strace-ui`
    binary onto your `PATH`, along with its dependencies.
 
 Note that `strace-ui` shells out to `strace`, so you'll also need to have
