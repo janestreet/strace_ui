@@ -23,9 +23,12 @@ depends: [
   "vec"
   "angstrom"               {>= "0.15.0"}
   "dune"                   {>= "3.17.0"}
-  "notty-community"        {= "0.2.4+ox"}
+  "notty-community"        {>= "0.2.4"}
 ]
 available: arch != "x86_32"
+conflicts: [
+  "oxcaml-compiler" {< "5.2.0minus39"}
+]
 synopsis: "A Bonsai_term application for interactively viewing strace output."
 description: "
 A Bonsai_term application for interactively viewing strace output.

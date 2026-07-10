@@ -29,7 +29,7 @@
 └────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-![GIF demo of strace-ui](./demos/demo.gif)
+![GIF demo of strace-ui](./demos/strace-ui-demo.gif)
 
 ## Installation
 
