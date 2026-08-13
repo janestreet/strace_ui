@@ -681,8 +681,8 @@ module Theme = struct
     View.text ~attrs:[ Attr.fg t.yellow; Attr.bold; Attr.bg t.bg ] s
   ;;
 
-  let of_flavor (flavor : Bonsai_term_catppuccin.Flavor.t) =
-    let c = Bonsai_term_catppuccin.color ~flavor in
+  let of_flavor (flavor : Bonsai_term_color_scheme.Flavor.t) =
+    let c = Bonsai_term_color_scheme.color ~flavor in
     { fg = c Text
     ; bg = c Crust
     ; highlight = c Surface1
@@ -1373,7 +1373,7 @@ let app
   =
   let model = Bonsai.Expert.Var.value model_var in
   let theme =
-    let%arr flavor = Bonsai_term_catppuccin.flavor graph in
+    let%arr flavor = Bonsai_term_color_scheme.flavor graph in
     Theme.of_flavor flavor
   in
   let inject : (Action.t -> unit Effect.t) Bonsai.t =
@@ -1735,15 +1735,15 @@ let command =
      and flavor_name =
        let all_themes =
          List.map
-           Bonsai_term_catppuccin.Flavor_name.all
-           ~f:Bonsai_term_catppuccin.Flavor_name.to_string
+           Bonsai_term_color_scheme.Flavor_name.all
+           ~f:Bonsai_term_color_scheme.Flavor_name.to_string
          |> String.concat ~sep:", "
        in
        flag
          "-theme"
          (optional_with_default
-            Bonsai_term_catppuccin.Flavor_name.Mocha
-            (Arg_type.create Bonsai_term_catppuccin.Flavor_name.of_string))
+            (Bonsai_term_color_scheme.Flavor_name.Catppuccin Mocha)
+            (Arg_type.create Bonsai_term_color_scheme.Flavor_name.of_string))
          ~doc:[%string "THEME Color theme (%{all_themes})"]
      in
      fun () ->
@@ -1829,11 +1829,11 @@ let command =
                     then "strace exited with an error"
                     else [%string "strace: %{stderr_first_line}"]);
               Bonsai.Effect.Expert.handle ~on_exn:ignore (!exit_ref 1)));
-       let flavor = Bonsai_term_catppuccin.Flavor_name.to_flavor flavor_name in
+       let flavor = Bonsai_term_color_scheme.Flavor_name.to_flavor flavor_name in
        let%bind.Deferred result =
          Bonsai_term.start_with_exit (fun ~exit ~dimensions graph ->
            exit_ref := exit;
-           Bonsai_term_catppuccin.set_flavor_within_app
+           Bonsai_term_color_scheme.set_flavor_within_app
              (Bonsai.return flavor)
              (fun graph -> app ~dimensions ~model_var ~exit:(Bonsai.return exit) graph)
              graph)

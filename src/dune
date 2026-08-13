@@ -1,8 +1,8 @@
 (library
  (name strace_ui)
  (public_name strace_ui)
- (libraries bonsai_term_components.catppuccin angstrom async bonsai
-   bonsai_term bonsai_term_components.border_box
+ (libraries angstrom async bonsai bonsai_term
+   bonsai_term_components.border_box bonsai_term_components.color_scheme
    bonsai_term_components.scroller core core_unix notty-community re2
    core_unix.signal_unix vec)
  (preprocess
