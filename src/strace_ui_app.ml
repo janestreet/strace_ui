@@ -1736,15 +1736,15 @@ let command =
        let all_themes =
          List.map
            Bonsai_term_color_scheme.Flavor_name.all
-           ~f:Bonsai_term_color_scheme.Flavor_name.to_string
+           ~f:Bonsai_term_color_scheme.Flavor_name.to_string_hum
          |> String.concat ~sep:", "
        in
        flag
          "-theme"
-         (optional_with_default
-            (Bonsai_term_color_scheme.Flavor_name.Catppuccin Mocha)
-            (Arg_type.create Bonsai_term_color_scheme.Flavor_name.of_string))
-         ~doc:[%string "THEME Color theme (%{all_themes})"]
+         (optional (Arg_type.create Bonsai_term_color_scheme.Flavor_name.of_string))
+         ~doc:
+           [%string
+             "THEME Color theme; overrides BONSAI_TERM_COLOR_SCHEME (%{all_themes})"]
      in
      fun () ->
        let open Deferred.Or_error.Let_syntax in
@@ -1829,14 +1829,20 @@ let command =
                     then "strace exited with an error"
                     else [%string "strace: %{stderr_first_line}"]);
               Bonsai.Effect.Expert.handle ~on_exn:ignore (!exit_ref 1)));
-       let flavor = Bonsai_term_color_scheme.Flavor_name.to_flavor flavor_name in
        let%bind.Deferred result =
          Bonsai_term.start_with_exit (fun ~exit ~dimensions graph ->
            exit_ref := exit;
-           Bonsai_term_color_scheme.set_flavor_within_app
-             (Bonsai.return flavor)
-             (fun graph -> app ~dimensions ~model_var ~exit:(Bonsai.return exit) graph)
-             graph)
+           let app_contents graph =
+             app ~dimensions ~model_var ~exit:(Bonsai.return exit) graph
+           in
+           match flavor_name with
+           | None -> app_contents graph
+           | Some flavor_name ->
+             let flavor = Bonsai_term_color_scheme.Flavor_name.to_flavor flavor_name in
+             Bonsai_term_color_scheme.set_flavor_within_app
+               (Bonsai.return flavor)
+               app_contents
+               graph)
        in
        let%bind (_ : int) = Deferred.return result in
        (* Kill strace when the app exits *)

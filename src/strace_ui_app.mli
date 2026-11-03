@@ -61,7 +61,7 @@ val app
   :  dimensions:Bonsai_term.Dimensions.t Bonsai.t
   -> model_var:Model.t Bonsai.Expert.Var.t
   -> exit:(int -> unit Bonsai_term.Effect.t) Bonsai.t
-  -> local_ Bonsai.graph
+  -> Bonsai.graph @ local
   -> view:Bonsai_term.View.t Bonsai.t
      * handler:(Bonsai_term.Event.t -> unit Bonsai_term.Effect.t) Bonsai.t
 
